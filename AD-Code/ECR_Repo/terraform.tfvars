@@ -1,0 +1,1 @@
+environment = ""  # the allowable values for environment is dev, qa and prod

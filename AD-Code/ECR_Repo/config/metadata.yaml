@@ -1,0 +1,5 @@
+variables:
+  account-id: 850506728038
+  kmsarn:
+  s3bucketName: keynol-maverick
+
