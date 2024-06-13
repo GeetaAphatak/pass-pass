@@ -1,0 +1,15 @@
+Keynol:
+https://850506728038.signin.aws.amazon.com/console
+
+Geeta/q%W74-F@
+850506728038
+
+
+py file run:
+python .\AnomalyDetectionMLcode.py '--train-model', 'yes', '--train-filename', 'data/walmart/walmart_state_daily_labelled.csv', '--inference-filename', 'inference/walmart/walmart_state_daily.csv', '--result-file-path', 'inference/walmart', '--processing-job-names', 'AnomalyDetection-test-32'
+
+
+Add opt folder to c or d drive directly
+
+
+task: Write a python script to perform the notebook job present in \wallmart\Notebooks\final data sets are also here
