@@ -1,0 +1,10 @@
+variables:
+  account-id: 850506728038
+  subnet_id: ['subnet-069000209fa768180','subnet-0ec469b3fc584710a','subnet-03f528ca5701621b4', 'subnet-08309e764c902489c','subnet-060d37cdc13292a91','subnet-029c5f29312c278cf']
+  security_group_id: ['sg-0c5ab08b2cc9ad30e']
+  s3bucketName: keynol-maverick
+  AnomalyDetectionLambdaName: AnomalyDetection
+  AnomalyDetectionResultsLambdaName: AnomalyDetectionResults
+  imageUri: 850506728038.dkr.ecr.us-east-1.amazonaws.com/keynol-ml-docker-image
+  region: us-east-1
+  vpc_endpoint_ids: ['vpce-0fe496958636c924c']

@@ -1,0 +1,18 @@
+code_file:
+  name: 'AnomalyDetectionMLcode.py'
+  s3_path: 's3://{s3bucket}/{s3_path}/'
+
+to_train:
+  no:
+    diskSize: 10
+    instanceType: "ml.m4.xlarge"
+  yes:
+    diskSize: 20
+    instanceType: "ml.m4.2xlarge"
+
+
+walmart_completeness:
+  metric: "completeness"
+  dashboard_name: "Walmart Completeness"
+
+

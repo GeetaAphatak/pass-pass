@@ -1,0 +1,26 @@
+code_file:
+  name: 'AnomalyDetectionMLcode.py'
+  s3_path: 'MLcode/sagemaker'
+
+train_file:
+  walmart_state_weekly: 'data/walmart/walmart_state_weekly_labelled.csv'
+  walmart_state_daily : 'data/walmart/walmart_state_daily_labelled.csv'
+
+results_file:
+  walmart_state_weekly: 'predictions/walmart/walmart_state_weekly.csv'
+  walmart_state_daily: 'predictions/walmart/walmart_state_daily.csv'
+
+to_train:
+  no:
+    diskSize: 10
+    instanceType: "ml.t3.medium"
+  yes:
+    diskSize: 20
+    instanceType: "ml.t3.medium"
+
+
+walmart_completeness:
+  metric: "completeness"
+  dashboard_name: "Walmart Completeness"
+
+
