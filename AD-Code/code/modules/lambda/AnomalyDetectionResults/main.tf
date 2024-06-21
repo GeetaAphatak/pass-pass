@@ -65,7 +65,13 @@ resource "aws_lambda_function" "lambda" {
 #
 #
 
-
+resource "aws_lambda_permission" "allow_sagemaker" {
+  statement_id  = "sagemaker-invoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lambda.arn
+  principal     = "sagemaker.amazonaws.com"
+  source_arn    = "arn:aws:sagemaker:us-east-1:850506728038:processing-job/*"
+}
 
 
 

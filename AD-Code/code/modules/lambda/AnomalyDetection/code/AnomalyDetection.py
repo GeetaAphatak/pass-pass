@@ -106,6 +106,17 @@ def get_processing_outputs(aws_info, config):
                 },
 
             },
+            {
+                'OutputName': 'model',
+                'S3Output': {
+                    'S3Uri': 's3://{s3bucket}/{s3_path}/model/'.format(
+                        s3bucket=aws_info['s3bucket'],
+                        s3_path=results_file_path),
+                    'LocalPath': '/opt/ml/processing/model',
+                    'S3UploadMode': 'Continuous'
+                },
+
+            },
             {  # save logs
                 'OutputName': 'inference_results',
                 'S3Output': {
@@ -116,14 +127,14 @@ def get_processing_outputs(aws_info, config):
                     'S3UploadMode': 'Continuous'
                 },
 
-            },
+            }
         ]
     }
 
     return processing_outputs
 
 
-def get_processing_resources(config, aws_info):
+def get_processing_resources(config, aws_info, domain, date_frequency):
     processing_resources = {
         'ClusterConfig': {
             'InstanceCount': 1,
@@ -141,7 +152,9 @@ def get_processing_resources(config, aws_info):
                                '--train-filename', config['train_file'],
                                '--inference-filename', config['inference_file'],
                                '--result-file-path', config['results_file'],
-                               '--processing-job-names', aws_info['processing_job_name']
+                               '--processing-job-names', aws_info['processing_job_name'],
+                               '--dataset-name', domain,
+                               '--date-frequency', date_frequency
                                ]
     }
     NetworkConfig = {
@@ -199,6 +212,7 @@ def lambda_handler(event, context):
     bucket_name = 'keynol-maverick'
     inference_file = event['Records'][0]['s3']['object']['key']
     domain = inference_file.split('/')[-1].rsplit('_',1)[0].lower().split("_")[0]
+    date_frequency = inference_file.split('/')[-1].rsplit('_', 1)[0].lower().split("_")[1]
     report_type = inference_file.split('/')[-1].rsplit('_',1)[0].lower()
     metadata = 'MLcode/sagemaker/configs/metadata.yaml'
     domain_config = f'MLcode/sagemaker/configs/{domain}_config.yaml'
@@ -210,11 +224,11 @@ def lambda_handler(event, context):
     aws_info = get_aws_info(config)
     print(aws_info)
 
-    aws_info['processing_job_name'] = "AnomalyDetection-test-" + set_datetime_filenames()
+    aws_info['processing_job_name'] = f"AnomalyDetection-{report_type.replace('_','-')}-{set_datetime_filenames()}"
 
     processing_inputs = get_processing_inputs(aws_info, config)
     processing_outputs = get_processing_outputs(aws_info, config)
-    processing_resources, appSpec, NetworkConfig, Environment, tags = get_processing_resources(config, aws_info)
+    processing_resources, appSpec, NetworkConfig, Environment, tags = get_processing_resources(config, aws_info, domain, date_frequency)
 
     print("##############################")
     print(processing_inputs, processing_outputs, processing_resources, appSpec, NetworkConfig, Environment, tags)

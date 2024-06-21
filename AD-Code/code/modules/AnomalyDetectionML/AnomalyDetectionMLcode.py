@@ -20,7 +20,8 @@ import logging
 import logging.handlers
 import boto3
 import yaml
-
+import pickle
+s3_client = boto3.client('s3')
 
 
 est = timezone('US/Eastern')
@@ -45,7 +46,15 @@ def read_csv_file(input_file_path):
 
 
 def standardize_date_col(dataframe, date_col):
-    dataframe[date_col] = pd.to_datetime(dataframe[date_col], format='%Y-%m-%d', errors='coerce')
+    # Convert the 'date' column to datetime format
+    dataframe[date_col] = pd.to_datetime(dataframe[date_col], errors='coerce')
+    # Check for any conversion errors
+    if dataframe[date_col].isnull().any():
+        print("Warning: Some dates could not be converted and are set as NaT")
+
+    # Standardize the date format to "YYYY-MM-DD"
+    dataframe[date_col] = dataframe[date_col].dt.strftime('%Y-%m-%d')
+
     # Sort the data by the 'Date' column in ascending order
     dataframe = dataframe.sort_values(date_col, ignore_index=True)
     return dataframe
@@ -84,10 +93,16 @@ def get_date_features(data, date_col):
 
 
 def get_decomposed_values(data, filter_values):
+    print("data passed to get_decomposed_values func", data.columns)
     decomposed_values_df = pd.DataFrame()
     for filter_value in filter_values:
+        print("filter_col", filter_col, "filter_value", filter_value, "date_col", date_col, "target", target)
+        print(data)
         df_sub_filter = data[data[filter_col] == filter_value].reset_index(drop=True).copy()
+        print("df_sub_filter", df_sub_filter.shape)
+        print(df_sub_filter)
         group_df = df_sub_filter[[date_col, target]].groupby([date_col])[target].apply(sum).reset_index()
+        print("group_df", group_df.shape)
 
         group_df[date_col] = pd.to_datetime(group_df[date_col], format="%Y-%m-%d")
 
@@ -96,9 +111,11 @@ def get_decomposed_values(data, filter_values):
         # STL - For Trend Analysis
         salesValues = list(group_df[target])
         dates = list(group_df[date_col])
+        print("data passed to get_decomposed_values func 2", dates, salesValues)
 
         filterData = pd.DataFrame(salesValues, index=dates)
         filterData.index = pd.to_datetime(filterData.index, format="%d-%m-%Y")
+        print("Filter data:", filterData.shape, filterData.columns)
         filterData.columns = ['Value']
         # filterData = filterData.asfreq('W-FRI').interpolate(method='linear')
         filterData = filterData.asfreq('D').interpolate(method='linear')
@@ -124,8 +141,8 @@ def get_decomposed_values(data, filter_values):
     return decomposed_values_df
 
 def split_train_data(data):
-    train_size = int(np.floor(data.shape[0] * 0.7))
-    val_size = int(np.floor(data.shape[0] * 0.7) - train_size)
+    train_size = int(np.floor(data.shape[0] * 0.8))
+    val_size = data.shape[0] - train_size
     print(train_size, val_size, train_size + val_size, data.shape[0],
           "\ntrain_size, val_size, train_size + val_size, data.shape[0]")
     train_data = df_train.iloc[:train_size]
@@ -160,12 +177,16 @@ def train_XGBmodel(X_train, y_train, X_val, y_val):
     return model
 
 
-def train_model(data, drop_for_training, ):
+def train_model(data, drop_for_training):
     train_data, val_data = split_train_data(data)
-    print(train_data.shape, val_data.shape, val_data['Anomaly'].value_counts())
+    print(train_data.shape, val_data.shape, val_data['anomaly'].value_counts())
+    print("drop_for_training list sent: ", drop_for_training)
+    drop_for_training = [col for col in drop_for_training if col in data.columns]
+    print("drop_for_training list final: ", drop_for_training, data.columns)
 
     # Split the data into features and target variable
-    X_train = train_data.drop(drop_for_training, axis=1)
+    if len(drop_for_training) > 0: X_train = train_data.drop(drop_for_training, axis=1)
+    else: X_train = train_data
     y_train = train_data[train_target]
 
     X_val = val_data.drop(drop_for_training, axis=1)
@@ -176,9 +197,51 @@ def train_model(data, drop_for_training, ):
     model = train_XGBmodel(X_train, y_train, X_val, y_val)
     return model
 
-def save_model(model):
+def label_group(data):
+    res_mean = data['residual'].values.mean()
+    resid_std = stats.median_abs_deviation(data['residual'].values)
+    # print(res_mean,resid_std)
+    lower_bound = res_mean - 3 * resid_std
+    upper_bound = res_mean + 3 * resid_std
+
+    # Calculate the bounds considering trend and seasonal components if available
+    upper_bound_series = upper_bound + data['trend'].values + data['seasonal'].values
+    lower_bound_series = lower_bound + data['trend'].values + data['seasonal'].values
+
+    # Mark anomalies based on the condition where residue values fall outside the [lower_bound, upper_bound] range
+    data['anomaly_label'] = (
+                (data['residual'] < lower_bound) | (data['residual'] > upper_bound)).astype(int)
+    data['upper_value'] = upper_bound_series
+    data['lower_value'] = lower_bound_series
+
+    return data
+
+def save_model(model, model_output_path):
     # save the model to S3
-    print("in save model")
+    print("Model has been trained, now saving the model @", model_output_path)
+    model_file = open(model_output_path, 'wb')
+    pickle.dump(model, model_file)
+    model_file.close()
+    print("Model saved")
+
+def save_result(inference_predictions, result_output_path):
+    # save the results to S3
+    print("Predictions are done, now saving the results")
+    inference_predictions.to_csv(result_output_path,index=False)
+    print("Results saved")
+
+def invoke_lambda(dataset_name):
+    try:
+        lambda_client = boto3.client('lambda',region_name='us-east-1')
+        lambda_payload = {"predicted_file_s3_path":f'predictions/{dataset_name}/results/'}
+        print("lambda_payload ", lambda_payload)
+        lambda_client.invoke(FunctionName='AnomalyDetectionResults',
+                             InvocationType='Event',
+                             Payload=json.dumps(lambda_payload))
+
+        print('Result load initiated')
+    except Exception as e:
+        print("Issue while calling Results lambda, {}".format(str(e)))
     return
 
 if __name__ == "__main__":
@@ -194,35 +257,46 @@ if __name__ == "__main__":
         parser.add_argument("--inference-filename", type=str)
         parser.add_argument("--result-file-path", type=str)
         parser.add_argument("--processing-job-names", type=str)
+        parser.add_argument("--dataset-name", type=str)
+        parser.add_argument("--date-frequency", type=str)
         args, _ = parser.parse_known_args()
         train_file = args.train_filename
         inference_file = args.inference_filename
         processing_job_names = args.processing_job_names
-        result_file_path = args.result_file_path
+        dataset_name = args.dataset_name
+        date_frequency = args.date_frequency
     else:
         parser.add_argument("--inference-filename", type=str)
         parser.add_argument("--train-filename", type=str)
         parser.add_argument("--result-file-path", type=str)
         parser.add_argument("--processing-job-names", type=str)
+        parser.add_argument("--dataset-name", type=str)
+        parser.add_argument("--date-frequency", type=str)
         args, _ = parser.parse_known_args()
         train_file = args.train_filename  # "na"
         inference_file = args.inference_filename
         processing_job_names = args.processing_job_names
         result_file_path = args.result_file_path
+        dataset_name = args.dataset_name
+        date_frequency = args.date_frequency
     print("Received arguments {}".format(args))
     print("Command Line Arguments Collected")
     print("Calling Pipeline code")
     print("train_file: ", train_file)
     print("inference_file: ", inference_file)
     print("Processing job names ", processing_job_names)
+    print("dataset name: ", dataset_name)
+    print("date frequency: ", date_frequency)
     rootPath = "/opt/ml/processing"
     local_train_file = os.path.join(rootPath + "/input/train/" + train_file.rsplit('/', 1)[1])
     local_inference_file = os.path.join(rootPath + "/input/inference/" + inference_file.rsplit('/', 1)[1])
-    print("local_inference_file, local_train_file:", local_inference_file, local_train_file, )
-    df_train = read_csv_file(local_train_file)
-    df_inference = read_csv_file(local_inference_file)
 
-    print(df_train.columns, df_inference.columns)
+    result_output_path = os.path.join(rootPath + "/output", f"{dataset_name}_{date_frequency}_result.csv")
+    model_output_path = os.path.join(rootPath + "/model", f"{dataset_name}_{date_frequency}_model.pkl")
+    print("local_inference_file, local_train_file:", local_inference_file, local_train_file, )
+    df_train_data = read_csv_file(local_train_file)
+    df_inference_data = read_csv_file(local_inference_file)
+    print(df_train_data.columns, df_inference_data.columns)
 
     ## Start training
     date_col = 'time_period'
@@ -231,13 +305,16 @@ if __name__ == "__main__":
     groupby_cols = ['key1']
     lag_columns = [target]
     lags = [1, 2, 4]  # Example lag values of 1 week and 2 weeks
-    drop_for_training = ['time_period', 'upper_value', 'lower_value', 'anomaly', 'train_flag', 'feedback_flag']
+    drop_for_training = ['time_period', 'upper_value', 'lower_value', 'anomaly', 'train_dataset_flag', 'feedback_flag']
+    drop_for_inference = ['time_period', 'upper_value', 'lower_value', 'anomaly', 'anomaly_label']
     train_target = 'anomaly'
-    df_train = standardize_date_col(df_train, date_col)
+    df_train = standardize_date_col(df_train_data, date_col)
+    df_inference_data = standardize_date_col(df_inference_data, date_col)
     df_train = get_lag_columns(df_train, groupby_cols, lag_columns, lags)
     df_train = get_date_features(df_train, date_col)
     filter_values = df_train[filter_col].unique()
     print("filter_values", filter_values)
+
 
     decomposed_values_df = get_decomposed_values(df_train, filter_values)
     print("decomposed_values_df:", decomposed_values_df.sample(3))
@@ -252,8 +329,50 @@ if __name__ == "__main__":
         alpha=0.5, adjust=False).mean(), 2)
 
     model = train_model(df_train, drop_for_training)
-    save_model(model)
+    save_model(model, model_output_path)
 
+    #inference code
+    inference_start_date = df_inference_data['time_period'].min()
+    print("inference_start_date: ", inference_start_date)
+    print("inference data size: ",df_inference_data.shape, df_train_data.shape)
+    # df_all = pd.concat([df_train_data[['time_period','key1','value']],df_inference_data])
+    df_all = pd.concat([df_train_data,df_inference_data])
+    print("Columns: ", df_all.columns, df_inference_data.columns, df_train_data.columns)
+    print("shape: ", df_all.shape, df_inference_data.shape, df_train_data.shape)
+    df_all = standardize_date_col(df_all, date_col)
+    print("shape: ", df_all.shape, df_inference_data.shape, df_train_data.shape)
+    df_all = get_lag_columns(df_all, groupby_cols, lag_columns, lags)
+    print("shape: ", df_all.shape, df_inference_data.shape, df_train_data.shape)
+    df_all = get_date_features(df_all, date_col)
+    print("shape: ", df_all.shape, df_inference_data.shape, df_train_data.shape)
+    filter_values = df_all[filter_col].unique()
+    print("filter_values", filter_values)
 
+    decomposed_values_df_all = get_decomposed_values(df_all, filter_values)
+    print("decomposed_values_df_all:", decomposed_values_df_all.sample(3))
+    df_all = df_all.merge(decomposed_values_df_all[[date_col, filter_col, "trend", "seasonal", "residual"]],
+                              on=[date_col, filter_col], how="inner")
+    print(df_all.shape, "shape of train+inference data after merging with decomposed values.")
+    # Encode categorical columns
+    df_all[filter_col] = encoder.fit_transform(df_all[filter_col])
+    df_all = df_all.reset_index(drop=True)
+    df_all[target + "_ma"] = round(df_all[target].ewm(
+        alpha=0.5, adjust=False).mean(), 2)
+    df_all = label_group(df_all)
+    print(df_all.columns)
+    print(df_all.shape)
+    inference_df_with_features = df_all[df_all[date_col]>=inference_start_date]  #df_all #
+    # inference_df_with_features.drop(columns=drop_for_inference, inplace=True)
+    print(inference_df_with_features.columns)
+    print(inference_df_with_features.shape)
+    inference_features_for_prediction = inference_df_with_features.drop(drop_for_inference, axis=1)
+    inference_df_with_features["anomaly"] = model.predict(inference_features_for_prediction)
+    inference_df_with_features["key1"] = encoder.inverse_transform(inference_df_with_features["key1"])
+    inference_df_with_features["train_dataset_flag"] = False
+    inference_df_with_features["feedback_flag"] = True
+    columns_to_save = ["time_period", "key1", "value", "lower_value", "upper_value", "anomaly", "train_dataset_flag","feedback_flag"]
+    save_result(inference_df_with_features[columns_to_save], result_output_path)
+
+    invoke_lambda(dataset_name)
 
     print("Sagemaker processing job complete")

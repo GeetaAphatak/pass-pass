@@ -1,14 +1,22 @@
 code_file:
   name: 'AnomalyDetectionMLcode.py'
-  s3_path: 's3://{s3bucket}/{s3_path}/'
+  s3_path: 'MLcode/sagemaker'
+
+train_file:
+  scanner_weekly: 'data/scanner/scanner_weekly_train.csv'
+  scanner_daily : 'data/scanner/scanner_daily_train.csv'
+
+results_file:
+  scanner_weekly: 'predictions/scanner/scanner_weekly.csv'
+  scanner_daily: 'predictions/scanner/scanner_daily.csv'
 
 to_train:
   no:
     diskSize: 10
-    instanceType: "ml.m4.xlarge"
+    instanceType: "ml.t3.medium"
   yes:
     diskSize: 20
-    instanceType: "ml.m4.2xlarge"
+    instanceType: "ml.t3.medium"
 
 
 walmart_completeness:
