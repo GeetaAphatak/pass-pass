@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f5937f4a-85d9-46da-921e-7089a8c0ac98" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/git_code/pipeline_code/GraphRAG_pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/git_code/config_files/Olo_config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/git_code/config_files/Olo_config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/git_code/config_files/config.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/git_code/config_files/config.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/git_code/pipeline_code/rag_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/git_code/pipeline_code/rag_pipeline.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/git_code/run_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/git_code/run_pipeline.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/git_code" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
+  <component name="ProjectId" id="2kQ22XvDSoOINXPNmYZGVW3L4eU" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/PoCs/Topbloc/git_code/pipeline_code&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PoCs\Topbloc\git_code\pipeline_code" />
+      <recent name="D:\PoCs\Topbloc\code" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f5937f4a-85d9-46da-921e-7089a8c0ac98" name="Changes" comment="" />
+      <created>1723201272610</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1723201272610</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/code/retrieval_querying_Weaviate_multipleLLMs.py</url>
+          <line>211</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/../RiskInternational/code/RiskInternational.py</url>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/code/rag_system/rag_pipeline.py</url>
+          <line>249</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
