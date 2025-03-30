@@ -1,0 +1,254 @@
+/* css for version one where the input box is at the top */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+:root {
+    --font-family: 'Outfit', sans-serif;
+    --background-color: #f0f2f5;
+    --header-background: #f0f4f9;
+    --sidebar-background: #f0f4f9;
+    --card-background: #ffffff;
+    --text-color: #333;
+    --subtext-color: #555;
+    --border-color: #ddd;
+    --button-background: #001f5a;
+    --button-hover: #0a3585;
+    --bubble-user: #d1e7dd;
+    --bubble-ai: #ffffff;
+    --light-shadow: rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+    --header-height: 60px; /* Adjusted for better aesthetics */
+}
+
+body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.header {
+    background-color: var(--header-background);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex: 0 0 var(--header-height); /* Fixed height for header */
+}
+
+.Broadridge-container {
+    flex-grow: 0;
+}
+
+.logo {
+    width: 150px; /* Adjust logo size as needed */
+    height: auto;
+    max-width: 100%;
+}
+
+.content-wrapper {
+    display: flex;
+    flex: 1 1 auto; /* Allow flex-grow for main content */
+    overflow: hidden; /* Hide overflow to manage scrollbars separately */
+}
+
+.sidebar {
+    width: 220px; /* Default sidebar width */
+    background-color: var(--sidebar-background);
+    box-shadow: 0 2px 4px var(--light-shadow);
+    padding: 20px;
+    overflow-y: auto; /* Enable vertical scrolling */
+    z-index: 10;
+    position: relative; /* Relative positioning to align below header */
+    top: 0; /* Align sidebar directly below the header */
+    height: calc(120vh - var(--header-height)); /* Full height minus header */
+}
+
+.sidebar .card {
+    margin-bottom: 10px; 
+    padding: 10px; 
+    cursor: pointer;
+    transition: background-color var(--transition-speed);
+    border: 1px solid var(--border-color); 
+    border-radius: var(--border-radius); 
+}
+
+.sidebar .card:hover {
+    background-color: #d6e9fb; /* Slightly darker on hover */
+}
+
+.sidebar .card-title {
+    font-size: 16px;
+    margin: 0;
+    color: var(--text-color);
+    font-weight: bold; /* Bold titles for emphasis */
+}
+
+.card-desc {
+    max-height: 0;
+    overflow-y: hidden;
+    transition: max-height var(--transition-speed) ease-out, opacity var(--transition-speed) ease-out;
+    opacity: 0;
+    font-size: 14px;
+    color: var(--subtext-color);
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px solid var(--border-color);
+}
+
+.sidebar .card:hover .card-desc {
+    max-height: 100px;
+    overflow-y: auto;
+    opacity: 1;
+    padding-bottom: 5px;
+}
+
+.main-content {
+    flex: 1; /* Allow main content to grow */
+    margin-left: 1px; /* Space for the sidebar */
+    padding: 20px;
+    overflow-y: auto; /* Enable vertical scrolling */
+    background-color: var(--card-background);
+    margin-top: 0; /* No margin from header */
+    border-radius: var(--border-radius); 
+    box-shadow: 0 2px 4px var(--light-shadow); 
+    position: relative; 
+}
+
+.section-container {
+    background-color: #f9f9f9;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px var(--light-shadow);
+    padding: 20px;
+    max-width: 1800px;
+    margin: 2px auto;
+    height: calc(100vh - var(--header-height)); /* Set a fixed height for the section to enable scrolling */
+    overflow-y: auto; /* Enable vertical scrolling for individual sections */
+}
+
+.ai-query-input {
+    width: 100%;
+    max-width: 900px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    resize: none;
+    min-height: 40px;
+    max-height: 200px;
+}
+
+.ai-query-button {
+    background-color: var(--button-background);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 15px;
+    font-size: 16px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    transition: background-color var(--transition-speed);
+}
+
+.ai-query-button:hover {
+    background-color: var(--button-hover);
+    color: #fefeff;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.chat-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.chat-bubble {
+    margin: 10px 0;
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    position: relative;
+}
+
+.user-bubble {
+    background-color: var(--bubble-user);
+    text-align: right;
+    margin-left: 10%;
+}
+
+.ai-bubble {
+    background-color: var(--bubble-ai);
+    text-align: left;
+    margin-right: 20%;
+}
+
+.chat-container .user-bubble:after,
+.chat-container .ai-bubble:after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    display: block;
+    width: 0;
+}
+
+.user-bubble:after {
+    border-width: 10px 10px 10px 0;
+    border-color: transparent var(--bubble-user) transparent transparent;
+    right: -10px;
+    top: 10px;
+}
+
+.ai-bubble:after {
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent var(--bubble-ai);
+    left: -10px;
+    top: 10px;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%; /* Make sidebar full width on smaller screens */
+        height: auto; /* Allow sidebar to expand as needed */
+        position: relative; /* Change to relative positioning */
+        top: 0; /* Reset top positioning */
+    }
+
+    .main-content {
+        margin-left: 0; /* Remove left margin for mobile */
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    .section-container {
+        height: auto; /* Allow section containers to expand */
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 10px; /* Reduce padding for smaller screens */
+    }
+
+    .ai-query-button {
+        padding: 8px 15px; /* Adjust button padding for mobile */
+    }
+
+    .ai-query-input {
+        font-size: 14px; /* Reduce font size for mobile */
+    }
+}

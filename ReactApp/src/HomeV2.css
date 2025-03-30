@@ -1,0 +1,908 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+:root {
+  --font-family: 'Outfit', sans-serif;
+  --background-color: #f0f2f5;
+  --header-background: #f0f4f9;
+  --sidebar-background: #f0f4f9;
+  --card-background: #ffffff;
+  --text-color: #333;
+  --subtext-color: #555;
+  --border-color: #f0f4f9;
+  --button-background: #001f5a;
+  --button-hover: #0a3585;
+  --bubble-user: #ffffff;
+  --bubble-ai: #ffffff;
+  --light-shadow: rgba(0, 0, 0, 0.1);
+  --border-radius: 8px;
+  --transition-speed: 0.3s;
+  --header-height: 60px; /* Adjusted for better aesthetics */
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden; /* Ensures the page itself doesn't scroll */
+  display: flex;
+  flex-direction: column;
+  font-family: Outfit !important;
+  -webkit-font-smoothing: antialiased;
+  font-size: var(--bs-body-font-size) !important;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--background-color);
+}
+
+header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  flex: 0 0 60px;
+}
+
+.content-wrapper1 {
+  display: flex; /* Set to flex for horizontal layout */
+  min-height: 100vh; /* Full height to occupy whole screen */
+  overflow: hidden; /* Prevent overflow issues */
+}
+.content-wrapper {
+  background: var(--background-color);
+  display: flex; /* Use flexbox for layout */
+  width: 100%; /* Full width of the page */
+  overflow: hidden; /* Prevents scrolling on the main container */
+  /* flex-direction: column; column direction for single column layout */
+  min-height: calc(100vh - var(--header-height)); /* Full screen height minus header */
+}
+.content-wrapper-chat-old {
+  display: flex;
+  flex-direction: column; /* Stack chat content vertically */
+  flex-grow: 1; /* Take the remaining width */
+  overflow: scroll; /* Clip overflow */
+  /* position: relative; */
+  padding: 10px 15px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  margin-left: 240px;
+  gap: 10px; /* Space between input and icons */
+  width: 70%; /* Ensure it fits within the container */
+  box-sizing: border-box; /* Include padding in width calculations */
+}
+.content-wrapper-chat {
+  background: var(--background-color);
+  flex: 1;
+  padding: 20px;
+  margin-left: 215px;
+  /* margin-right: 15px; */
+  margin-bottom: 200px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Enables scrolling within the content section */
+}
+.chat-container {
+  background: var(--background-color);
+  flex: 1;
+  margin-top: 50px; /* Space for the fixed header */
+  margin-bottom: 70px; /* Space for the fixed footer */
+  overflow-y: scroll; /* Enables scrolling within the content section */
+  height: 70vh
+}
+
+.search-box{
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  gap: 1px; /* Space between input and icons */
+  width: 70%; /* Ensure it fits within the container */
+  box-sizing: border-box; /* Include padding in width calculations */
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+}
+
+.ag-theme-alpine .ag-cell.expanded-cell {
+  font-family: Outfit !important;
+  font-size: 1.2em;
+  padding: 10px;
+  background-color: #f0f0f0; /* Optional: change background for better visual */
+}
+
+.custom-ag-grid .ag-cell {
+  font-family: Outfit !important;
+  font-size: 50px; /* Change this value to your desired font size */
+}
+
+.custom-ag-grid .ag-header-cell-label {
+  font-family: Outfit !important;
+  font-size: 50px; /* Change this value to your desired font size */
+}
+
+/* -----------------------------------------------------------------------------*/
+
+.main{
+font-family: Outfit !important;
+flex: 1;
+min-height: 90vh;
+height: 100vh;
+padding-bottom: 15vh;
+position: relative;
+user-select: none;
+
+
+}
+.main .nav{
+display: flex;
+align-items: center;
+justify-content: space-between;
+font-size: 22px;
+padding: 20px;
+color: #585858;
+}
+.main .nav .user{
+width: 40px;
+border-radius: 50px;
+}
+.main-container{
+max-width: 1300px;
+margin: auto;
+padding: 20px 0;
+}
+.main-container .greet{
+margin: 0px 0px;
+font-size: 42px;
+color:#c4c7c5;
+}
+.main .greet span{
+background: -webkit-linear-gradient(16deg,#0f43b4, #31e1b8);
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;   
+}
+.greet .text{
+margin: 10px 0;
+font-size: 16px;
+color:#787878;
+/* font-weight: 500px; */
+} 
+.main .cards{
+display: grid;
+grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
+gap: 15px;
+}
+
+.main .card{
+height: 200px;
+padding: 15px;
+background-color: #f0f4f9;
+border-radius: 10px;
+position: relative;
+cursor: pointer;
+}
+.main .card img{
+width: 35px;
+padding: 5px;
+position: absolute;
+border-radius: 20px;
+bottom: 10px;
+right: 10px;
+background: white;
+}
+.greet p{
+margin-bottom: 0rem;
+}
+
+.main-bottom {
+position: absolute;
+bottom: 0;
+width: 100%;
+max-width: 1200px;
+margin: auto;
+display: flex;
+gap: 20px;
+}
+
+
+
+/* .search-box img{
+width: 24px;
+cursor: pointer;
+} */
+
+.mic {
+width: 28px;
+cursor: pointer;
+}
+
+.send-btn {
+width: 28px;
+cursor: pointer;
+}
+
+.search-box input{
+flex: 1;
+resize: vertical; /* Allow vertical resizing */
+background: transparent;
+border: 0;
+outline: 0;
+padding: 12px;
+font-size: 14px;
+overflow-y: auto; /* Enable vertical scrolling */
+width: 100%; /* Make sure input fills the space */
+}
+.search-box div{
+display: flex;
+align-items: center;
+gap: 1px;
+}
+
+.main .bottom-info{
+font-size: 13px;
+margin: 15px auto;
+text-align: center;
+font-weight: 300;
+}
+
+.sidebar a,
+.link {
+text-decoration: none;
+color: black;
+}
+
+.result{
+/* padding: 0px 5%; */
+max-height: 75vh;
+overflow-y: scroll;
+cursor: text;
+user-select: text;
+width: 100%;
+}
+.result::-webkit-scrollbar{
+display: none;
+}
+
+.user-input{
+margin: 30px 0px;
+display: flex;
+align-items:flex-start;
+gap: 20px;
+background-color: #f0f4f9;
+padding: 10px;
+border-radius: 10px;
+}
+.user-img{
+width: 40px;
+flex-shrink: 0; 
+/* border-radius: 50px; */
+}
+
+.user-input p{
+flex-grow: 1;
+line-height: 40px;
+margin: 0;
+}
+
+.bot-result{
+display: flex;
+align-items: start;
+gap: 20px;
+padding: 10px 0px 0px 10px;
+}
+.bot-img{
+width: 40px;
+flex-shrink: 0; 
+/* border-radius: 50px; */
+}
+
+.bot-result p{
+flex-grow: 1;
+line-height: 40px;
+margin: 0;
+}
+.loader-div{
+display: flex;
+flex-direction: row;
+align-items: center;
+gap: 10px;
+font-size: 16px;
+
+}
+.loader {
+
+width: 38px;
+height: 38px;
+border-radius: 50%;
+position: relative;
+animation: rotate 1s linear infinite;
+overflow-x: hidden;
+overflow-y: hidden;
+}
+.loader::before , .loader::after{
+content: "";
+box-sizing: border-box;
+position: absolute;
+inset: 0px;
+border-radius: 50%;
+border: 5px solid #001f5a;
+animation: prixClipFix 2s linear infinite;
+}
+
+.loader::after {
+border-color: #d7d7d7;
+animation: prixClipFix 2s linear infinite , rotate 0.5s linear infinite reverse;
+inset: 6px;
+}
+
+@keyframes rotate {
+0% { transform: rotate(0deg)} 
+100% { transform: rotate(360deg)} 
+}
+@keyframes prixClipFix {
+0%   {clip-path: polygon(50% 50%,0 0,0 0,0 0,0 0,0 0 )}
+25%  {clip-path: polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0 )}
+50%  {clip-path: polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+75%  {clip-path: polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+100% {clip-path: polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0 )}
+}
+
+.result-data p{
+font-size: 17px;
+font-weight: 300px;
+line-height: 1.8;
+}
+
+/* header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+width: 100%;
+padding: 10px 15px;
+background-color: #f0f4f9;
+border-bottom:  #acb8c5 1px solid; 
+} */
+
+.header {
+  background-color: var(--header-background);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex: 0 0 var(--header-height); /* Fixed height for header */
+  position: relative;
+  box-shadow: 0 2px 2px var(--light-shadow);
+}
+
+header .heading{
+margin: 0; /* Add this to remove any default margins */
+text-align: center;
+padding: 7px;
+font-size: 22px;
+color: #001f5a;
+font-weight: bolder;
+margin-left: -160px;
+}
+
+header img{
+height: 30px;
+width: auto;
+margin-right: 20px;
+
+}
+header .icons{
+display: flex;
+gap: 1rem;
+align-items: center; 
+overflow-x: hidden;
+
+}
+#home {
+color: #001f5a;
+cursor: pointer;
+}
+.icons i {
+cursor: pointer;
+color: #001f5a;
+transition: color 0.2s ease;
+}
+#admin {
+/* margin-right: 20px; */
+width: auto;
+color: #001f5a;
+cursor: pointer;
+}
+
+.ag-theme-quartz{
+flex-direction: row;
+
+} 
+.ag-theme-quartz .ag-cell {
+white-space: normal; /* Allow wrapping */
+}
+
+.ag-theme-quartz .ag-row {
+line-height: 1.5;    /* Adjust line height for readability */
+}  
+
+/* #table {
+} */
+#table-container {
+position: relative;
+}
+
+.download-icon {
+position: absolute;
+top: 10px; /* Adjust spacing from the top */
+right: 10px; /* Adjust spacing from the right */
+z-index: 1; /* Ensure it appears above the container */
+}
+
+#table {
+margin-top: 40px; /* Adjust margin to push the table below the icon */
+}
+
+.download-csv {
+cursor: pointer;
+width: 24px; /* Adjust the size of the image */
+height: 24px;
+}
+
+.carousel {
+display: flex;
+flex-direction:row;
+/* align-items: center; */
+margin: 5px 0; /* Adjust as needed */
+width: 100%;
+/* background-color: #f0f4f9; */
+padding: 10px 0px 10px 0px;
+
+}
+
+.imagesHolder-text {
+margin-bottom: 10px; /* Space between text and images */
+left: 0;
+color: #585858;
+}
+
+.imagesHolder {
+display: flex;
+align-items: center; /* Center vertically */
+width: 700px;
+height: 120px;
+}
+
+.image-buttons {
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 10px; /* Space around buttons */
+}
+
+.image-buttons img {
+width: 30px; /* Adjust the width of the arrow icons */
+height: 30px; /* Adjust the height of the arrow icons */
+transition: transform 0.3s; /* Smooth scaling on hover */
+}
+
+.image-buttons img:hover {
+transform: scale(1.1); /* Scale up on hover for effect */
+}
+
+.image-viewer {
+flex-grow: 1; /* Allow the viewer to grow */
+display: flex;
+justify-content: center; /* Center images */
+}
+
+.images-holder {
+display: flex; /* Show images in a row */
+overflow: hidden; /* Hide overflowing images */
+}
+
+.images-holder img {
+margin: 0 5px; /* Space between images */
+/* max-width: 100%; Ensure images are responsive */
+height: 80px; /* Maintain aspect ratio */
+border-radius:8px ;
+cursor: pointer;
+}
+
+.bot-result-check {
+display: grid;
+font-size: 1rem;
+font-weight: bolder;
+padding-top: 30px;
+}
+
+/* Container for the checkbox form */
+.checkbox-form {
+margin-top: 10px;
+margin-left: 70px;
+}
+
+/* Style for labels of the checkboxes */
+.checkbox-form label {
+padding: 0px; /* Slightly increased padding for better spacing */
+display: flex;
+align-items: center;
+font-weight: lighter;
+margin-bottom: 10px;
+color: #333;
+cursor: pointer; /* Add pointer to indicate clickable labels */
+transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+/* Enhance the appearance on hover */
+.checkbox-form label:hover {
+background-color: #f0f0f0; /* Light grey background on hover */
+}
+
+/* Styling the checkbox input */
+.checkbox-form input[type="checkbox"] {
+margin-right: 12px; 
+width: 16px; 
+height: 16px;
+cursor: pointer; 
+border-color: #001f5a;
+accent-color: rgb(0, 31, 90); /* Blue tint for checkboxes */
+}
+
+/* Enhancing overall accessibility */
+.checkbox-form {
+  font-family: Outfit !important;
+/* font-family: 'Arial', sans-serif; Consistent font family */
+}
+
+.checkbox-grid {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+justify-content: space-between;
+max-width: 100%; /* Adjust width as necessary, but ensure it accommodates four columns */
+}
+
+.checkbox-item {
+flex: 1 1 calc(25% - 10px); /* Ensures four columns */
+box-sizing: border-box;
+}
+
+.checkbox-item input {
+margin-right: 5px;
+}
+/* Improved mobile responsiveness */
+@media (max-width: 600px) {
+.checkbox-form {
+    margin-left: 20px; /* Adjusted margin for smaller screens */
+}
+
+.checkbox-form label {
+    font-size: 0.95rem; /* Slightly smaller font for better fit */
+}
+
+.checkbox-form p {
+    font-size: 1rem; /* Maintain paragraph size for readability */
+    margin-bottom: 8px;
+}
+}
+
+.question-buttons {
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 10px; /* Space around buttons */
+}
+.question-buttons img {
+width: 30px; /* Adjust the width of the arrow icons */
+height: 30px; /* Adjust the height of the arrow icons */
+transition: transform 0.3s; /* Smooth scaling on hover */
+
+}
+
+.question-buttons img:hover {
+transform: scale(1.1); /* Scale up on hover for effect */
+}
+.questionContainer{
+display: flex;
+align-items: center; /* Center vertically */
+height: 120px;    
+
+}
+
+.question-holder {
+display: flex;
+gap: 10px; /* Space between question boxes */
+overflow: hidden;
+}
+
+.question-box {
+background-color: #ededed; /* Light background color */
+font-size: 14px;
+height: 120px;
+border-radius: 8px;    
+padding: 10px;
+width: 200px;
+cursor: pointer;
+}
+.seperator {
+margin: 0; /* Space around separator */
+}
+
+.question-viewer {
+flex-grow: 1; /* Allow the viewer to grow */
+display: flex;
+justify-content: center; /* Center images */
+}  
+
+.question{
+line-height: 20px;
+margin-bottom: 0;
+}
+
+.reset-btn {
+display: flex;
+justify-content: center;
+margin-bottom: 20px;
+margin-top: 3px;
+margin-left: 5px; /* Space between search box and reset button */
+}
+
+.reset-btn button {
+background-color: #001f5a; /* Red background */ 
+color: #ffffff; /* White text */
+border-radius: 15px;
+padding: 10px 20px;
+border: none;
+cursor: pointer;
+font-size: 16px;
+transition: background-color 0.3s ease;
+}
+
+.reset-btn button:hover {
+background-color: #001f5a;
+color: #fefeff;
+}
+
+.ag-cell{
+
+/* white-space: nowrap; */
+/*
+  The `white-space` property in CSS is used to control how whitespace inside an element is handled.
+  Available values for `white-space` are:
+  - `normal`: Collapses whitespace, and breaks lines as necessary to fill line boxes.
+  - `nowrap`: Collapses whitespace, but does not break lines.
+  - `pre`: Preserves whitespace, and only breaks lines at newline characters.
+  - `pre-wrap`: Preserves whitespace, but breaks lines as necessary to fill line boxes.
+  - `pre-line`: Collapses whitespace, but breaks lines at newline characters and as necessary to fill line boxes.
+  - `break-spaces`: Preserves whitespace, breaks lines at newline characters, and breaks lines at any other point when necessary to prevent overflow.
+*/
+white-space: 'pre-line';
+overflow: hidden;
+text-overflow: ellipsis;
+/* max-width: 150px; */
+transition: all 0.2s ease;
+/* height: 40px; */
+}
+
+.cell.expanded {
+/* white-space: normal; */
+white-space: 'pre-line';
+max-width: none;
+background-color: #ffffff;
+border: 1px solid #007BFF;
+
+}
+
+.upload-buttons{
+display: flex;
+justify-content: center;
+align-items: center;
+margin: 20px;
+}
+
+.upload-buttons button {
+color: #ffffff;
+padding: 5px 10px;
+border-radius: 8px;
+border: none;
+background: linear-gradient(16deg, #0f43b4, #31e1b8);
+cursor: pointer;
+transition: transform 0.2s ease, background 0.5s ease, box-shadow 0.5s ease;
+}
+
+.upload-buttons button:hover {
+background: linear-gradient(16deg, #31e1b8, #0f43b4);
+transform: scale(1.02);
+}
+
+.add-btn{
+padding: 20px;
+
+}
+
+.translate-container{
+display: flex;
+justify-content: center;
+height: 100vh;
+padding: 20px;
+}
+
+.modal-body form {
+display: flex;
+flex-direction: column;
+gap: 20px; /* Adjust this value to increase/decrease the gap */
+}
+
+.modal-header .btn-close{
+display: none;
+}
+
+.modal-header{
+border-bottom: none !important;
+}
+.modal-footer{
+border-top: none !important;
+}
+.modal-dialog {
+margin-top: 200px !important;
+}
+.modal-content{
+width: 90% !important;
+}
+.modal-footer .btn-primary{
+background: linear-gradient(16deg, #0f43b4, #07adb0);
+border: none;
+padding: 5px 5px;
+border-radius: 8px;
+cursor: pointer;
+font-size: small;
+transition: transform 0.2s ease, background 0.5s ease, box-shadow 0.5s ease;
+width: 50px;
+height: 30px;
+}
+.modal-footer .btn-secondary{
+background-color: #6c757d;
+border: none;
+padding: 5px 5px;
+border-radius: 8px;
+cursor: pointer;
+font-size: small;
+transition: transform 0.2s ease, background 0.5s ease, box-shadow 0.5s ease;
+width: 50px;
+height: 30px;
+
+}
+
+.form-control:focus{
+border-color: #001f5a !important;
+box-shadow: none !important;
+}
+
+.response-message p {
+margin: 0;
+padding: 0;
+text-align: left;
+}
+
+.response-message li {
+  margin: 0;
+  padding: 0;
+  text-indent: -1em;
+  padding-left: 15px;/* Add this if you need some space between bullet/number and text */
+}
+
+.response-message ol, ul {
+  margin: 0;
+  padding: 0;  
+  padding-left: 15px;
+}
+
+li::marker {
+  font-size: 0.9em; /* Slightly adjust size if necessary to make marker less prominent */
+  padding-right: 0; /* Remove any extra padding from the list marker itself */
+}
+
+/* Style for the loader overlay */
+.loader-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background: rgba(255, 255, 255, 0.7); /* Semi-transparent background */
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 9999; /* Ensure it appears on top */
+}
+
+/* Style for the loader content */
+.loader {
+font-size: 24px;
+font-weight: bold;
+color: #000;
+}
+
+/* Apply blur effect to the background */
+.blurred-background {
+filter: blur(5px);
+pointer-events: none; /* Prevent interaction with blurred content */
+}
+
+/* Optional: You can style the loader animation (e.g., a spinner) */
+.loader-spinner {
+border: 4px solid whitesmoke;
+border-top: 4px solid #3498db;
+border-radius: 50%;
+width: 50px;
+height: 50px;
+animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+
+.ag-header {
+  position: sticky !important;
+}
+.sidebar {
+  width: 200px; /* Default sidebar width */
+  background-color: var(--sidebar-background);
+  box-shadow: 0 2px 4px var(--light-shadow);
+  padding: 10px;
+  overflow-y: auto; /* Enable vertical scrolling */
+  z-index: 10;
+  position: fixed; /* Relative positioning to align below header */
+  top: 100; /* Align sidebar directly below the header */
+  height: calc(120vh - var(--header-height)); /* Full height minus header */
+}
+
+.sidebar .card {
+  margin-bottom: 10px; 
+  padding: 1px; 
+  cursor: pointer;
+  transition: background-color var(--transition-speed);
+  border: 1px solid var(--border-color); 
+  border-radius: var(--border-radius); 
+}
+
+.sidebar .card:hover {
+  background-color: #d6e9fb; /* Slightly darker on hover */
+}
+
+.sidebar .card-title {
+  font-size: 16px;
+  margin: 0;
+  color: var(--text-color);
+  font-weight: bold; /* Bold titles for emphasis */
+  text-align: right;
+}
+
+.card-desc {
+  max-height: 0;
+  overflow-y: hidden;
+  transition: max-height var(--transition-speed) ease-out, opacity var(--transition-speed) ease-out;
+  opacity: 0;
+  font-size: 14px;
+  color: var(--subtext-color);
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid var(--border-color);
+}
+
+.sidebar .card:hover .card-desc {
+  max-height: 100px;
+  overflow-y: auto;
+  opacity: 1;
+  padding-bottom: 5px;
+}
+.footer {
+  background: var(--background-color);
+  display: flex; /* Align items within the footer horizontally */
+  align-items: center;
+  /* background-color: var(--header-background); */
+  padding: 1px 30px;
+  margin-top: auto; /* Pushes the footer to the bottom of the container */
+}

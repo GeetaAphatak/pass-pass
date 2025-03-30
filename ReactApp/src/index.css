@@ -1,0 +1,242 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
+
+/* :root {
+  --bubble-user: Red;
+  --bubble-ai: #ffffff;
+} */
+
+body1 {
+  margin: 0;
+  height: 100vh;
+  overflow: hidden; /* Ensures the page itself doesn't scroll */
+  display: flex;
+  flex-direction: column;
+  font-family: Outfit !important;
+  -webkit-font-smoothing: antialiased;
+  font-size: var(--bs-body-font-size) !important;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: Outfit !important;
+}
+
+
+/* Home.css */
+body {
+  font-family: Outfit !important;
+  /* font-family: Arial, sans-serif; */
+  margin: 0;
+  background-color: #f4f6f8;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* .header {
+  background-color: rgb(240, 244, 249);
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  position: fixed;
+  top: 0;
+  height: 20px;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+} */
+
+
+.heading {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.icons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* .chat-window {
+  padding: 10px;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  gap: 15px;
+  overflow-y: auto; /* Enables scrolling within the content section 
+} */
+
+.user-message, .response-message {
+  display: flex;
+  margin: 5px 0;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: var(--bs-body-font-size) !important;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.user-bubble {
+  background-color: var(--bubble-user);
+  color: black;
+  margin-left: auto;
+}
+
+.bot-bubble {
+  background-color: var(--bubble-ai);
+  color: #333;
+}
+
+.footer {
+  display: flex; /* Align items within the footer horizontally */
+  /* position: fixed; */
+  bottom: 0;
+  left: 100px;
+  width: 100%;
+  background: var(--background-color);
+  padding: 1px 38px;
+}
+
+.search-box1 {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 15px;
+  border: 1px solid #ddd;
+}
+
+.search-box input {
+  flex-grow: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 15px;
+  font-size: 16px;
+}
+
+.mic, .btn {
+  width: 35px;
+  height: 30px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.reset-btn {
+  float: left;
+  width: 116px;
+  margin-top: -2px;
+  text-align: center;
+  /* margin-top: 1px; */
+}
+
+.reset-btn button {
+  padding: 10px 20px;
+  background-color: #001f5a;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.reset-btn button:hover {
+  background-color: #001f5a;
+}
+
+
+
+/* Loader overlay styles */
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6); /* Dull, darkened background */
+  display: flex;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;      /* Center vertically */
+  z-index: 9999;  /* Ensure it's on top of other content */
+}
+
+/* Loader spinner styles */
+.loader-spinner {
+  border: 6px solid #f3f3f3; /* Light gray */
+  border-top: 6px solid #3498db; /* Blue color */
+  border-radius: 50%;
+  width: 80px;  /* Spinner size */
+  height: 80px; /* Spinner size */
+  animation: spin 1.5s linear infinite;  /* Faster spin animation */
+}
+
+/* Spin animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.user-message {
+  display: flex;
+  align-items: left; /* Vertically center the content */
+  margin-bottom: 10px; /* Adjust space between user messages */
+}
+
+.user-img1 {
+  width: 40px; /* Adjust the image size */
+  height: 40px; /* Adjust the image size */
+  border-radius: 50%; /* Make the image circular */
+  margin-right: 10px; /* Space between the image and text */
+}
+
+.message-bubble.user-bubble {
+  max-width: 90%; /* Optional, adjust based on your needs */
+  background-color: var(--bubble-user); /* Light background color for user bubble */
+  border-radius: 15px;
+  padding: 10px;
+  display: flex;
+  align-items: left; /* Align text in the middle of the bubble */
+  justify-content: left;
+}
+
+
+.response-message {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.message-bubble.bot-bubble {
+  display: inline-flex;          /* use inline-flex for content-based sizing */
+  align-items: center;
+  max-width: 60%;
+  background-color: var(--bubble-ai); /* Light gray color for bot message */
+  border-radius: 15px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+/* .user-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+} */
+
+.bot-response-text {
+  /* margin-left: 10px; */
+  display: inline-block;
+  max-width: 100%;
+}
+
+.ag-grid-container {
+  margin-top: 0px;
+  margin-left: -28px;
+  text-align: left;
+}
